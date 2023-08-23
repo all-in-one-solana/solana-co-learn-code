@@ -21,23 +21,9 @@ async function readDataFromSolana() {
   console.log('Connection to network established:', versionInfo);
 
   // use test account
-  // get wallet private key from the .env file
-  let privateKey;
-  if (process.env.PRIVATE_KEY == null) {
-    console.log("Please provide a private key");
-    // generate a new keypair and write to .env file
-    const newAccount = Web3.Keypair.generate();
-    privateKey = JSON.stringify(Array.from(newAccount.secretKey));
-    fs.appendFileSync(".env", "PRIVATE_KEY=" + privateKey + "\n");
-  } else {
-    privateKey = process.env.PRIVATE_KEY;
-  }
-  console.log("Using private key:", privateKey);
-  // contruct Web3.Keypair from the private key
-  const keypair = Web3.Keypair.fromSecretKey(new Uint8Array(JSON.parse(privateKey)));
+  let keypair = await initializeKeypair();
   // get the public key from the keypair
   const publicKey = keypair.publicKey;
-  // let pubkey = new Web3.PublicKey("ATrkCHG6PnkhVNaVz9tekg4je5cvZcLuZuF5UAxxEvyK");
   await connection.getBalance(publicKey).then((balance) => {
     console.log("the wallet: ", publicKey.toBase58(), " have balance is [", balance / Web3.LAMPORTS_PER_SOL, "]");
   });
@@ -48,4 +34,25 @@ async function readDataFromSolana() {
   });
 }
 
-export { readDataFromSolana }
+
+async function initializeKeypair(): Promise<Web3.Keypair> {
+  // 如果没有私钥，生成新密钥对
+  console.log('正在读取密钥对... 🗝️');
+  if (!process.env.PRIVATE_KEY) {
+    console.log('正在生成新密钥对... 🗝️');
+    const signer = Web3.Keypair.generate();
+
+    console.log('正在创建 .env 文件');
+    // fs.writeFileSync('.env', `PRIVATE_KEY=[${signer.secretKey.toString()}]` + '\n');
+    fs.appendFileSync('.env', `PRIVATE_KEY=[${signer.secretKey.toString()}]` + '\n');
+
+    return signer;
+  }
+
+  const secret = JSON.parse(process.env.PRIVATE_KEY ?? '') as number[];
+  const secretKey = Uint8Array.from(secret);
+  const keypairFromSecret = Web3.Keypair.fromSecretKey(secretKey);
+  return keypairFromSecret;
+}
+
+export { readDataFromSolana, initializeKeypair }

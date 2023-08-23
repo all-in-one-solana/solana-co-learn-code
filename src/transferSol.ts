@@ -16,7 +16,9 @@ export async function transferSol(connection: Web3.Connection, from: Web3.Keypai
     [from],
     { commitment: 'confirmed' }
   );
-  console.log("signedTransaction: ", signedTransaction);
+  console.log(
+    `Transaction https://explorer.solana.com/tx/${signedTransaction}?cluster=custom`
+  )
   await connection.getBalance(from.publicKey).then((balance) => {
     console.log("the wallet: ", from.publicKey.toBase58(), " have balance is [", balance / Web3.LAMPORTS_PER_SOL, " Sol]");
   });

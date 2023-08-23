@@ -18,6 +18,10 @@ export async function airdropSolIfNeeded(
       2 * Web3.LAMPORTS_PER_SOL
     );
 
+    console.log(
+      `Transaction https://explorer.solana.com/tx/${airdropSignature}?cluster=custom`
+    )
+
     const latestBlockhash = await connection.getLatestBlockhash();
 
     await connection.confirmTransaction({

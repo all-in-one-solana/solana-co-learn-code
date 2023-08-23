@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import * as Web3 from '@solana/web3.js';
 import { airdropSolIfNeeded, initializeKeypair, getRpcEndpoint } from "./utils";
 // import { pingProgram } from './ping';
+import { transferSol } from './transferSol';
 
 // 在代码开始时加载 .env 文件
 dotenv.config();
@@ -19,7 +20,11 @@ async function main() {
   await connection.getBalance(keypair.publicKey).then((balance) => {
     console.log("the wallet: ", keypair.publicKey.toBase58(), " have balance is [", balance / Web3.LAMPORTS_PER_SOL, "]");
   });
+  // TODO: need test on devenet
   // await pingProgram(connection, keypair);
+  const newAccount = Web3.Keypair.generate();
+  console.log("newAccount: ", newAccount.publicKey.toBase58());
+  await transferSol(connection, keypair, newAccount.publicKey, 1);
 }
 
 main()

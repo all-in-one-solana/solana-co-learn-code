@@ -1,13 +1,11 @@
 import * as Web3 from "@solana/web3.js"
 import { initializeKeypair, getRpcEndpoint } from "./utils"
 
-export async function readDataFromSolana() {
+export async function getBalance() {
   let rpcEndpoint = getRpcEndpoint();
   console.log("rpcEndpoint: ", rpcEndpoint);
   // connection to the solana network
   const connection = new Web3.Connection(rpcEndpoint, 'confirmed');
-  const versionInfo = await connection.getVersion();
-  console.log('Connection to network established:', versionInfo);
 
   // use test account
   let keypair = await initializeKeypair();

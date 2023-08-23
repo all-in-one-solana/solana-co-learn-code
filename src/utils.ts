@@ -10,9 +10,9 @@ export async function airdropSolIfNeeded(
   const balance = await connection.getBalance(signer.publicKey);
   console.log('当前余额为', balance / Web3.LAMPORTS_PER_SOL, 'SOL');
 
-  // 如果余额少于 1 SOL，执行空投
+  // 如果余额少于 2 SOL，执行空投
   if (balance / Web3.LAMPORTS_PER_SOL < 2) {
-    console.log('正在空投 1 SOL');
+    console.log('正在空投 2 SOL');
     const airdropSignature = await connection.requestAirdrop(
       signer.publicKey,
       2 * Web3.LAMPORTS_PER_SOL

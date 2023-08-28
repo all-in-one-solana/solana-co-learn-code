@@ -1,8 +1,8 @@
 import * as Web3 from "@solana/web3.js"
-import { initializeKeypair, getRpcEndpoint } from "./utils"
+import { initializeKeypair } from "./utils"
 
 export async function getBalance() {
-  let rpcEndpoint = getRpcEndpoint();
+  let rpcEndpoint = "https://api.devnet.solana.com";
   console.log("rpcEndpoint: ", rpcEndpoint);
   // connection to the solana network
   const connection = new Web3.Connection(rpcEndpoint, 'confirmed');

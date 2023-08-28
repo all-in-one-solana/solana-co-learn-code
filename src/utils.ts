@@ -19,7 +19,7 @@ export async function airdropSolIfNeeded(
     );
 
     console.log(
-      `Transaction https://explorer.solana.com/tx/${airdropSignature}?cluster=custom`
+      `Transaction https://explorer.solana.com/tx/${airdropSignature}?cluster=devnet`
     )
 
     const latestBlockhash = await connection.getLatestBlockhash();
